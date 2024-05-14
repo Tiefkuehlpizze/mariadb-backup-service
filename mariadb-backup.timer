@@ -1,0 +1,11 @@
+[Unit]
+Description=Weekly mariadb backuo timer
+
+[Timer]
+OnCalendar=weekly
+Persistent=true
+RandomizedDelaySec=1h
+Unit=mariadb-backup.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,2 @@
+TARGET_DIR=/var/lib/backup/mariadb
+BACKUPS_TO_KEEP=3

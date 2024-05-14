@@ -1,0 +1,16 @@
+[Unit]
+Description=Runs mariadb-backup
+Wants=mariadb-backup.timer
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/conf.d/mariadb-backup
+ExecCondition=/bin/test -d "$TARGET_DIR"
+ExecStartPre=-/bin/bash -c "ls -t $TARGET_DIR/*.tar.gz | tail -n $BACKUPS_TO_KEEP | xargs echo $TARGET_DIR | xargs rm -v" 
+ExecStart=/bin/bash -c "([ -d \"%V/%N\" ] && rm -r \"%V/%N\"); mkdir \"%V/%N\" && /usr/bin/mariadb-backup --defaults-file=/etc/my.cnf.d/mariadb-backup.cnf --backup --compress --target-dir=\"%V/%N\" && tar -I pigz -C \"%V/%N\" -cf \"$TARGET_DIR/%N.`date +%%Y-%%m-%%d-%%H-%%M`.tar.gz\" ."
+ExecStop=-/bin/rm -rv "%V/%N"
+User=mysql
+Group=mysql
+
+[Install]
+WantedBy=multi-user.target
