@@ -1,5 +1,5 @@
 [Unit]
-Description=Weekly mariadb backuo timer
+Description=Weekly mariadb backup timer
 
 [Timer]
 OnCalendar=weekly
